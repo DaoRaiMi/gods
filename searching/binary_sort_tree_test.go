@@ -19,6 +19,31 @@ func TestSearchBST(t *testing.T) {
 
 	root := num7
 
+	root2 := &Node{data: new(int)}
+	*root2.data = 7
 	v,ok := SearchBST(root, 13)
 	fmt.Printf("%+v,%v\n",*v.data,ok)
+
+	v2,ok2 := SearchBST(root2, 1)
+	fmt.Println(*v2.data, ok2)
+}
+
+func TestInsertBST(t *testing.T) {
+	root := &Node{}
+	InsertBST(root, 7)
+	InsertBST(root, 1)
+	InsertBST(root, 3)
+	InsertBST(root, 5)
+
+	fmt.Println(*root.data)
+	num1 := root.left
+	num3 := num1.right
+	num5 := num3.right
+	fmt.Println(*num1.data,*num3.data)
+	fmt.Println(*num5.data)
+
+}
+
+func showTree(root *Node) {
+
 }
