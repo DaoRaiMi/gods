@@ -2,6 +2,7 @@ package searching
 
 import (
 	"fmt"
+	"gods/queue"
 	"testing"
 )
 
@@ -44,6 +45,43 @@ func TestInsertBST(t *testing.T) {
 
 }
 
-func showTree(root *Node) {
+func TestDeleteBST(t *testing.T) {
+	treeNums := []int{62,58,88,47,73,99,35,51,93,29,37,49,56,36,48,50}
+	root := &Node{}
+	for _, i := range treeNums {
+		InsertBST(root, i)
+	}
 
+	fmt.Printf("原始数据： ")
+	showTree(root)
+
+	//fmt.Println()
+	//fmt.Println("Execute DeleteBST(root,root,47)")
+	//DeleteBST(root,root,47)
+	//showTree(root)
+
+	fmt.Println()
+	fmt.Println("Execute DeleteBST(root,root,37)")
+	DeleteBST(root,root,37)
+	showTree(root)
+}
+
+func showTree(root *Node) {
+	if root == nil {
+		return
+	}
+
+	q := queue.NewLinkedQueue()
+	q.EnQueue(root)
+	for q.Size() > 0 {
+		head := q.DeQueue()
+		node := head.(*Node)
+		fmt.Printf("%v ", *node.data)
+		if node.left != nil {
+			q.EnQueue(node.left)
+		}
+		if node.right != nil {
+			q.EnQueue(node.right)
+		}
+	}
 }

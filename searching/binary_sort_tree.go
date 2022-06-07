@@ -1,5 +1,7 @@
 package searching
 
+import "fmt"
+
 type Node struct {
 	left *Node
 	right *Node
@@ -35,8 +37,56 @@ func InsertBST(t *Node, n int) {
 		左子树中找到最靠右的那结点，或者在右子树中找到那个最靠左的结点。
  */
 
-func DeleteBST(t *Node, n int) {
-	// todo
+// parent 是表示待删除结点的父结点
+// tree 是整棵树
+func DeleteBST(parent, tree *Node, n int) {
+	if tree == nil {
+		return
+	}
+
+	if *tree.data == n {
+		// 当前结点t是要删除的结点，需要处理该结点的子树。
+		deleteNode(parent, tree)
+	}else if *tree.data > n {
+		DeleteBST(tree, tree.left, n)
+	}else {
+		DeleteBST(tree, tree.right,n)
+	}
+}
+
+func deleteNode(parent,node *Node) {
+	fmt.Println("parent node.data = ", *parent.data)
+	fmt.Println("current node.data = ", *node.data)
+	if node.left == nil && node.right == nil {
+		// 待删除结点是叶子结点时，只需要把它的父结点对应的分支置为nil，该结点会被垃圾回收掉。
+		if *parent.data > *node.data {
+			parent.left = nil
+		}else {
+			parent.right = nil
+		}
+	}else if node.left == nil { // 拼接右子树，把右子树拼接在父结点的左右分支上
+		if *parent.data > *node.data {
+			parent.left = node.right
+		}else {
+			parent.right = node.right
+		}
+	}else if node.right == nil { // 拼接左子树
+		if *parent.data > *node.data {
+			parent.left = node.left
+		}else {
+			parent.right = node.left
+		}
+	}else {
+		// 待删除的结点左右子树都不为空，此时需要从左子树中找出最右的结点来替换待删除的结点(当然也可以从右子树中找最左的结点)
+		rightMax,rightMaxParent := node.left,node.left
+		for rightMax.right != nil {
+			rightMaxParent = rightMax
+			rightMax = rightMax.right
+		}
+
+		*node.data = *rightMax.data
+		rightMaxParent.right = rightMax.left // 拼接最右结点的左子树
+	}
 }
 
 /*
