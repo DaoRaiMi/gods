@@ -1,11 +1,12 @@
 package sorting
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestSelectionSort(t *testing.T) {
 	SelectionSort(randomArray)
-	fmt.Println("排序结果：",randomArray)
+	if !sliceEqual(randomArray, sortedArray) {
+		t.Errorf("failed to execute quickSort, want: %v, got: %v\n", sortedArray, randomArray)
+	}
 }
